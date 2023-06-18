@@ -1,6 +1,6 @@
 import { select, confirm, input } from '@inquirer/prompts';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import amd from 'rollup-plugin-amd';
 
 console.clear();
 
@@ -54,10 +54,14 @@ console.log(
 );
 
 export default {
-  input: 'index.js',
+  input: path,
   output: ['amd', 'cjs', 'es', 'iife', 'umd', 'system'].map((format) => ({
-    file: `dist/index.${format}.js`,
-    format
+    file: `./dist/index.${format}.js`,
+    format,
+    name: path
+      .split('/')
+      .slice(-1)[0]
+      .split('.')[0][0]
   })),
-  plugins: [commonjs(), nodeResolve()]
+  plugins: [amd(), commonjs()]
 };

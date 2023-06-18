@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.1",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "rollup": "^3.25.1"
+    "rollup": "^3.25.1",
+    "rollup-plugin-amd": "^4.0.0"
   },
   "dependencies": {
     "@inquirer/prompts": "^2.1.1"
