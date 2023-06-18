@@ -1,0 +1,11 @@
+{
+  "name": "magisterka",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^1.0.0",
+    "esbuild": "^0.17.18"
+  }
+}
