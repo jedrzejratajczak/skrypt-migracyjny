@@ -1,19 +1,6 @@
-import commonjs from '@rollup/plugin-commonjs';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-
-export default {
-  input: 'index.js',
-  output: {
-    file: 'dist/bundle.js',
-    format: 'es'
-  },
-  plugins: [commonjs(), nodeResolve()]
-};
-
-/////////
-
 import { select, confirm, input } from '@inquirer/prompts';
-import esbuild from 'esbuild';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 console.clear();
 
@@ -66,14 +53,11 @@ console.log(
   `\nTrwa budowanie twojej biblioteki ${purposeMap[purpose]} ze ścieżki ${path}`
 );
 
-Promise.all(
-  ['esm', 'iife', 'cjs'].map((format) =>
-    esbuild.build({
-      entryPoints: [path],
-      format,
-      outfile: `dist/index.${format}.js`
-    })
-  )
-);
-
-console.log('\nBudowanie zakończone!');
+export default {
+  input: 'index.js',
+  output: ['amd', 'cjs', 'es', 'iife', 'umd', 'system'].map((format) => ({
+    file: `dist/index.${format}.js`,
+    format
+  })),
+  plugins: [commonjs(), nodeResolve()]
+};
