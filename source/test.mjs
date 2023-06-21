@@ -4,7 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 
 const build = async () => {
   const config = {
-    input: '../tests/lib/index.cjs.js',
+    input: '../tests/moment.js',
     output: ['amd', 'cjs', 'es', 'iife', 'umd', 'system'].map((format) => ({
       file: `./dist/index.${format}.js`,
       format,
