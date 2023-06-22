@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="./dist/index.umd.js"></script>
+    <script src="./require.js"></script>
+
+    <script>
+      require(['./dist/index.umd.js'], function (moment) {
+        console.log(moment('2016-01-01').format());
+      });
+    </script>
+  </head>
+</html>
