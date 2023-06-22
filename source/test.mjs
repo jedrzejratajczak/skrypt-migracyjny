@@ -4,11 +4,11 @@ import commonjs from '@rollup/plugin-commonjs';
 
 const build = async () => {
   const config = {
-    input: '../tests/moment.js',
-    output: ['amd', 'cjs', 'es', 'iife', 'umd', 'system'].map((format) => ({
+    input: '../tests/js-utils/src/average.js',
+    output: ['amd', 'cjs', 'es', 'iife', 'umd'].map((format) => ({
       file: `./dist/index.${format}.js`,
       format,
-      name: 'testOutput'
+      name: 'average'
     })),
     plugins: [amd(), commonjs()]
   };
