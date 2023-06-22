@@ -55,7 +55,7 @@ console.log(
 
 export default {
   input: path,
-  output: ['amd', 'cjs', 'es', 'iife', 'umd', 'system'].map((format) => ({
+  output: ['amd', 'cjs', 'es', 'iife', 'umd'].map((format) => ({
     file: `./dist/index.${format}.js`,
     format,
     name: path
