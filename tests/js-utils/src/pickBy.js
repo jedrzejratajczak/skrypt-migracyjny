@@ -1,7 +1,3 @@
-function getDefaultExportFromCjs (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-}
-
 /**
  * Creates an object composed of the object enumerable properties that predicate returns truthy for.
  * The predicate is invoked with two arguments: (value, key).
@@ -63,7 +59,6 @@ function getDefaultExportFromCjs (x) {
  * });
  * // => {}
  */
-
 const pickBy = (object, predicate, pickOwnKeys = true) => {
   const result = {};
   const type = Object.prototype.toString.call(object);
@@ -102,8 +97,4 @@ const pickBy = (object, predicate, pickOwnKeys = true) => {
   return result;
 };
 
-var pickBy_1 = pickBy;
-
-var pickBy$1 = /*@__PURE__*/getDefaultExportFromCjs(pickBy_1);
-
-export { pickBy$1 as default };
+module.exports = pickBy;

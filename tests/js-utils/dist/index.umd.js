@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.average = factory());
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.pickBy = factory());
 })(this, (function () { 'use strict';
 
 	function getDefaultExportFromCjs (x) {
@@ -9,61 +9,109 @@
 	}
 
 	/**
-	 * Calculates the average of a set of numbers.
-	 * Accepts any number of numbers as parameters, or an array of numbers.
-	 * Ommits any non number value.
+	 * Creates an object composed of the object enumerable properties that predicate returns truthy for.
+	 * The predicate is invoked with two arguments: (value, key).
 	 *
-	 * @param {Number|Array} [...nums] A set of numbers or an array of numbers.
-	 * @returns {Number} The average number of the set of data provided.
+	 * @param {Object} object The source object.
+	 * @param {function} predicate The function invoked per property.
+	 * @param {Boolean} [pickOwnKeys=true] If `true` will look up only for own enumerable keys; otherwise will look up in prototype chain.
+	 * @throws {TypeError} Throws if `object` is not plain object.
+	 * @throws {TypeError} Throws if `predicate` is not function.
+	 * @throws {TypeError} Throws if `pickOwnKeys` is not boolean but not undefined.
+	 * @returns {Object} Returns the new object.
 	 * @example
 	 *
-	 * average(5, 10, 50, -45, 6, 7); // => 5.5
-	 * average([5, 10, 50, -45, 6, 7]); // => 5.5
+	 * const object = Object.create({
+	 *   e: 5
+	 * });
 	 *
-	 * average(2, 4, 0, -0); // => 1.5
-	 * average([2, 4, 0, -0]); // =>
+	 * Object.defineProperties(object, {
+	 *   a: {
+	 *     value: 1,
+	 *     enumerable: true
+	 *   },
+	 *   b: {
+	 *     value: '2',
+	 *     enumerable: true
+	 *   },
+	 *   c: {
+	 *     value: 3,
+	 *     enumerable: true
+	 *   },
+	 *   d: {
+	 *     value: 4,
+	 *     enumerable: false
+	 *   }
+	 * });
 	 *
-	 * average(7); // => 7
-	 * average([7]); // => 7
+	 * pickBy(object, function (value) {
+	 *   return typeof value === 'number';
+	 * });
+	 * // => { a: 1, c: 3 }
 	 *
-	 * average(0, -0); // => 0
-	 * average([0, -0]); // => 0
+	 * pickBy(object, function (value) {
+	 *   return typeof value === 'number';
+	 * }, false);
+	 * // => { a: 1, c: 3, e: 5 }
 	 *
-	 * average(); // => 0
-	 * average([]); // => 0
+	 * pickBy(object, function (value) {
+	 *   return typeof value === 'function';
+	 * });
+	 * // => {}
 	 *
-	 * average(Infinity, -Infinity, 0, -0, null, NaN, undefined, false, true, 'foo'); // => 0
-	 * average([Infinity, -Infinity, 0, -0, null, NaN, undefined, false, true, 'foo']); // => 0
+	 * pickBy(object, function (_, key) {
+	 *   return key === 'a';
+	 * });
+	 * // => { a: 1 }
 	 *
-	 * average(5, 4, null, true, '12', Infinity); // => 0
-	 * average([5, 4, null, true, '12', Infinity]); // => 0
+	 * pickBy(object, function (_, key) {
+	 *   return key === 'd'; // property "d" is not enumerable
+	 * });
+	 * // => {}
 	 */
-	const average = (...nums) => {
-	  let sum = 0;
-	  let count = 0;
-	  let len = nums.length;
 
-	  if (len === 1 && Array.isArray(nums[0])) {
-	    nums = nums[0];
-	    len = nums.length;
+	const pickBy = (object, predicate, pickOwnKeys = true) => {
+	  const result = {};
+	  const type = Object.prototype.toString.call(object);
+
+	  if (
+	    typeof object !== 'object' ||
+	    object === null ||
+	    Array.isArray(object) ||
+	    type === '[object Set]' ||
+	    type === '[object WeakSet]' ||
+	    type === '[object Map]' ||
+	    type === '[object WeakMap]'
+	  ) {
+	    throw new TypeError('Expected a plain object for first argument');
 	  }
 
-	  while (len--) {
-	    const num = nums[len];
+	  if (typeof predicate !== 'function') {
+	    throw new TypeError('Expected a function for second argument');
+	  }
 
-	    if (Number.isFinite(num)) { // equivalent of
-	      sum += num;
-	      count += 1;
+	  if (typeof pickOwnKeys !== 'boolean') {
+	    throw new TypeError('Expected a boolean for third argument');
+	  }
+
+	  for (const key in object) {
+	    const meetsCriteria = pickOwnKeys
+	      ? Object.prototype.hasOwnProperty.call(object, key) &&
+	        predicate(object[key], key)
+	      : predicate(object[key], key);
+
+	    if (meetsCriteria) {
+	      result[key] = object[key];
 	    }
 	  }
 
-	  return count > 0 ? sum / count : 0;
+	  return result;
 	};
 
-	var average_1 = average;
+	var pickBy_1 = pickBy;
 
-	var average$1 = /*@__PURE__*/getDefaultExportFromCjs(average_1);
+	var pickBy$1 = /*@__PURE__*/getDefaultExportFromCjs(pickBy_1);
 
-	return average$1;
+	return pickBy$1;
 
 }));

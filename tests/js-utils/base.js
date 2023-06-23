@@ -1,4 +1,4 @@
-const pickBy = require('./dist/index.umd.js');
+const pickBy = require('./src/pickBy.js');
 
 const object = Object.create({
   e: 5
